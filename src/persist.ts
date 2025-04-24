@@ -1,7 +1,7 @@
 import { readFile, writeFile } from "fs/promises";
 import { Result } from "try";
 
-type PoolUpdate = { lpBurned: number; lpBurnedPercentage: number; timestamp: number };
+type PoolUpdate = { lpBurned: string; lpBurnedPercentage: number; timestamp: number };
 type Pool = { pool: string; updates: PoolUpdate[] };
 
 export const getPoolUpdates = async () => {
@@ -9,7 +9,7 @@ export const getPoolUpdates = async () => {
   return (exists ? JSON.parse(file) : []) as Pool[];
 };
 
-export const addPoolUpdate = async (pool: string, lpBurned: number, lpBurnedPercentage: number) => {
+export const addPoolUpdate = async (pool: string, lpBurned: string, lpBurnedPercentage: number) => {
   const pools = await getPoolUpdates();
 
   const existingPoolIndex = pools.findIndex((entry) => entry.pool === pool);

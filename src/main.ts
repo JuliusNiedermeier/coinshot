@@ -34,12 +34,8 @@ app.get("/start", (ctx) => {
   if (subscription && !subscription.closed) return ctx.text("Screener already running.");
 
   subscription = createScreener({}).subscribe(async (data) => {
-    console.log(data);
-    await addPoolUpdate(
-      data.pool,
-      parseFloat(data.lpBurned.toExact()),
-      parseFloat(data.lpBurnedPercentage.mul(100).toFixed(4))
-    );
+    console.log(`📝 Writing update for pool ${data.pool}`);
+    await addPoolUpdate(data.pool, data.lpBurned.toExact(), parseFloat(data.lpBurnedPercentage.mul(100).toFixed(4)));
   });
 
   return ctx.text("Screener started.");

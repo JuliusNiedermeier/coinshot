@@ -77,13 +77,13 @@ export const createScreener = (config: GetPoolUpdateObservableConfig) => {
 
           return {
             pool: pool.value.address,
-            lpBurned: lpBurned,
+            lpBurned,
             lpBurnedPercentage,
           };
         }),
 
         // Only emit when burn amount changes
-        distinctUntilChanged((prev, curr) => prev.lpBurned === curr.lpBurned),
+        distinctUntilChanged((prev, curr) => prev.lpBurned.toExact() === curr.lpBurned.toExact()),
 
         // Stop when shutdown time reached
         takeUntil(shutdownTimeReached)
