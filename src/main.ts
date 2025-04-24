@@ -35,7 +35,11 @@ app.get("/start", (ctx) => {
 
   subscription = createScreener({}).subscribe(async (data) => {
     console.log(data);
-    await addPoolUpdate(data.pool, parseFloat(data.lpBurnedPercentage.mul(100).toFixed(4)));
+    await addPoolUpdate(
+      data.pool,
+      parseFloat(data.lpBurned.toExact()),
+      parseFloat(data.lpBurnedPercentage.mul(100).toFixed(4))
+    );
   });
 
   return ctx.text("Screener started.");

@@ -77,7 +77,7 @@ export const createScreener = (config: GetPoolUpdateObservableConfig) => {
 
           return {
             pool: pool.value.address,
-            lpBurned: lpBurned.toExact(),
+            lpBurned: lpBurned,
             lpBurnedPercentage,
           };
         }),
