@@ -3,6 +3,7 @@ import { createScreener } from "./screener";
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { addPoolUpdate, getPoolUpdates } from "./persist";
+import { wakeupJob } from "./cron";
 
 let subscription: Subscription | null = null;
 
@@ -47,3 +48,5 @@ app.get("/stop", (ctx) => {
 });
 
 serve(app, (info) => console.log(`🚀 Server running at http://localhost:${info.port}`));
+
+wakeupJob.start();
