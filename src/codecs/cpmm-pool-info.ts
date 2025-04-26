@@ -16,35 +16,42 @@ import {
 // So please convert this CpmmPoolInfoLayout from the Raydium package, to the new format @solana/kit uses. You can get the docs for the new method here: https://solana-kit-docs.vercel.app/docs/concepts/codecs
 // <Pasted the old Layout from raydium here>
 
+// Names adjusted based on program rust source code at:
+// https://github.com/raydium-io/raydium-cp-swap/blob/183ddbb11550cea212710a98351779a41873258b/programs/cp-swap/src/states/pool.rs#L26
+
 export const cpmmPoolInfoDecoder = getStructDecoder([
   ["discriminator", fixDecoderSize(getBytesDecoder(), 8)], // blob(8) :contentReference[oaicite:4]{index=4}
-  ["configId", getAddressDecoder()],
+
+  ["ammConfig", getAddressDecoder()],
   ["poolCreator", getAddressDecoder()],
-  ["vaultA", getAddressDecoder()],
-  ["vaultB", getAddressDecoder()],
+  ["token0Vault", getAddressDecoder()],
+  ["token1Vault", getAddressDecoder()],
 
-  ["mintLp", getAddressDecoder()],
-  ["mintA", getAddressDecoder()],
-  ["mintB", getAddressDecoder()],
+  ["lpMint", getAddressDecoder()],
+  ["token0Mint", getAddressDecoder()],
+  ["token1Mint", getAddressDecoder()],
 
-  ["mintProgramA", getAddressDecoder()],
-  ["mintProgramB", getAddressDecoder()],
+  ["token0Program", getAddressDecoder()],
+  ["token1Program", getAddressDecoder()],
 
-  ["observationId", getAddressDecoder()],
+  ["observationKey", getAddressDecoder()],
 
-  ["bump", getU8Decoder()],
+  ["authBump", getU8Decoder()],
   ["status", getU8Decoder()],
 
-  ["lpDecimals", getU8Decoder()],
-  ["mintDecimalA", getU8Decoder()],
-  ["mintDecimalB", getU8Decoder()],
+  ["lpMintDecimals", getU8Decoder()],
+  ["mint0Decimals", getU8Decoder()],
+  ["mint1Decimals", getU8Decoder()],
 
-  ["lpAmount", getU64Decoder()],
-  ["protocolFeesMintA", getU64Decoder()],
-  ["protocolFeesMintB", getU64Decoder()],
-  ["fundFeesMintA", getU64Decoder()],
-  ["fundFeesMintB", getU64Decoder()],
+  ["lpSupply", getU64Decoder()],
+  ["protocolFeesToken0", getU64Decoder()],
+  ["protocolFeesToken1", getU64Decoder()],
+  ["fundFeesToken0", getU64Decoder()],
+  ["fundFeesToken1", getU64Decoder()],
   ["openTime", getU64Decoder()],
+  ["recentEpoch", getU64Decoder()],
 
-  ["seq", getArrayDecoder(getU64Decoder(), { size: 32 })], // seq(u64(), 32) :contentReference[oaicite:5]{index=5}
+  ["seq", getArrayDecoder(getU64Decoder(), { size: 31 })],
 ]);
+
+export type CpmmPoolInfo = ReturnType<(typeof cpmmPoolInfoDecoder)["decode"]>;
